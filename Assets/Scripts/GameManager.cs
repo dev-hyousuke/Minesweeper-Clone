@@ -1,12 +1,17 @@
+using Assets.Scripts.BoardGeneration;
 using Assets.Scripts.BoardGeneration.Interfaces;
+using Assets.Scripts.InputHandler;
+using Assets.Scripts.InputHandler.Interfaces;
 using UnityEngine;
 
-public class Game : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
     [SerializeField] int BoardWidth;
     [SerializeField] int BoardHeight;
+    [SerializeField] int TotalMines;
 
     private IBoard _board;
+    private IInputHandler _inputHandler;
     private bool gameover;
 
     private void Awake()
@@ -14,6 +19,7 @@ public class Game : MonoBehaviour
         Application.targetFrameRate = 60;
 
         _board = GetComponentInChildren<Board>();
+        _inputHandler = GetComponent<InputHandler>();
     }
 
     private void Start() => NewGame();
@@ -22,20 +28,19 @@ public class Game : MonoBehaviour
     {
         gameover = false;
 
-        _board.PrepareBoard(BoardWidth, BoardHeight);
-
         Camera.main.transform.position = new Vector3(BoardWidth / 2f, BoardHeight / 2f, -10f);
-        //_board.Draw(state);
+        
+        _board.PrepareBoard(BoardWidth, BoardHeight, TotalMines);
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R))
+        if (_inputHandler.GetRestartInput())
             NewGame();
         else if (!gameover)
-            if (Input.GetMouseButtonDown(1))
+            if (_inputHandler.GetRightMouseButtomDown())
                 _board.Flag();
-            else if (Input.GetMouseButtonDown(0))
+            else if (_inputHandler.GetLeftMouseButtomDown())
                 _board.Reveal();
     }
 }

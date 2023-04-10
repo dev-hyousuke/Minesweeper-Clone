@@ -4,7 +4,7 @@ namespace Assets.Scripts.BoardGeneration.Interfaces
 {
     public interface IBoard
     {
-        void PrepareBoard(int width, int height);
+        void PrepareBoard(int width, int height, int totalMines);
         void Draw(Cell[,] cells);
         void Flag();
         void Reveal();
