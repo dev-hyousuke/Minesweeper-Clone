@@ -1,2 +1,2 @@
 # Minesweeper-Clone
-a clone of the game Minesweeper 
+A clone of the game Minesweeper 
